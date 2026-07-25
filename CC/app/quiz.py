@@ -1,4 +1,5 @@
 import streamlit as st
+from app.ui import render_quiz_progress, render_empty_state
 
 QUESTIONS = [
     {
@@ -59,6 +60,18 @@ def init_quiz_state():
         st.session_state.quiz_answer = None
 
 
+def clear_quiz_answer():
+    """Tenta remover a chave `quiz_answer` do session_state; se falhar, atribui None com segurança."""
+    try:
+        if "quiz_answer" in st.session_state:
+            del st.session_state["quiz_answer"]
+    except Exception:
+        try:
+            st.session_state.quiz_answer = None
+        except Exception:
+            pass
+
+
 def iniciar_quiz():
     init_quiz_state()
     st.session_state.quiz_started = True
@@ -105,49 +118,173 @@ def render_quiz():
     init_quiz_state()
 
     if not st.session_state.quiz_started:
-        st.info("Responda a algumas perguntas para descobrir seu perfil inicial em tecnologia.")
+        render_empty_state(
+            "Quiz não iniciado",
+            "Clique em 'Começar Quiz' no menu lateral para descobrir seu perfil em Ciência da Computação.",
+            "🎯"
+        )
         return
 
     st.markdown("---")
-    st.subheader("🧠 Quiz de Perfil")
 
     if not st.session_state.quiz_completed:
         total_perguntas = len(QUESTIONS)
         pergunta_atual = QUESTIONS[st.session_state.quiz_step]
         progresso = (st.session_state.quiz_step + 1) / total_perguntas
 
-        st.progress(progresso)
-        st.write(f"**Pergunta {st.session_state.quiz_step + 1} de {total_perguntas}**")
-        st.write(pergunta_atual["pergunta"])
+        # Barra de progresso customizada
+        render_quiz_progress(st.session_state.quiz_step + 1, total_perguntas)
+        
+        # Pergunta
+        st.markdown(
+            f"""
+            <div style='
+                background: white;
+                border-left: 4px solid #667eea;
+                border-radius: 8px;
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+            '>
+                <p style='color: #64748b; margin: 0; font-size: 0.9rem;'>Pergunta {st.session_state.quiz_step + 1} de {total_perguntas}</p>
+                <h3 style='color: #1e293b; margin: 0.5rem 0 0 0;'>{pergunta_atual["pergunta"]}</h3>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
+        # Opções com melhor design
+        st.markdown("<p style='color: #64748b; font-weight: 600; margin-bottom: 1rem;'>Escolha uma opção:</p>", unsafe_allow_html=True)
+        
         resposta = st.radio(
             "Escolha uma opção:",
             [opcao["texto"] for opcao in pergunta_atual["opcoes"]],
             key="quiz_answer",
+            label_visibility="collapsed"
         )
 
-        if st.button("Próxima pergunta" if st.session_state.quiz_step < total_perguntas - 1 else "Ver resultado"):
-            if resposta:
-                opcao_escolhida = next(
-                    opcao for opcao in pergunta_atual["opcoes"] if opcao["texto"] == resposta
-                )
-                st.session_state.quiz_scores[opcao_escolhida["valor"]] += 1
+        col1, col2, col3 = st.columns([1, 1, 1])
+        with col2:
+            button_text = "✅ Ver Resultado" if st.session_state.quiz_step == total_perguntas - 1 else "➡️ Próxima"
+            
+            if st.button(button_text, use_container_width=True):
+                if resposta:
+                    opcao_escolhida = next(
+                        opcao for opcao in pergunta_atual["opcoes"] if opcao["texto"] == resposta
+                    )
+                    st.session_state.quiz_scores[opcao_escolhida["valor"]] += 1
 
-                if st.session_state.quiz_step < total_perguntas - 1:
-                    st.session_state.quiz_step += 1
-                    st.session_state.quiz_answer = None
-                    st.rerun()
+                    if st.session_state.quiz_step < total_perguntas - 1:
+                        st.session_state.quiz_step += 1
+                        clear_quiz_answer()
+                        st.rerun()
+                    else:
+                        st.session_state.quiz_completed = True
+                        st.session_state.quiz_result = calcular_result(st.session_state.quiz_scores)
+                        clear_quiz_answer()
+                        st.rerun()
                 else:
-                    st.session_state.quiz_completed = True
-                    st.session_state.quiz_result = calcular_result(st.session_state.quiz_scores)
-                    st.session_state.quiz_answer = None
-                    st.rerun()
-            else:
-                st.warning("Selecione uma opção para continuar.")
+                    st.warning("⚠️ Selecione uma opção para continuar.")
     else:
-        st.success("Quiz concluído!")
-        st.subheader(st.session_state.quiz_result["titulo"])
-        st.write(st.session_state.quiz_result["descricao"])
+        # Resultado do quiz
+        result = st.session_state.quiz_result
+        profile = result["profile"]
+        
+        # Cards de resultado com gradientes
+        profile_colors = {
+            "programming": {"bg": "linear-gradient(135deg, #667eea, #764ba2)", "icon": "💻"},
+            "tech": {"bg": "linear-gradient(135deg, #f093fb, #f5576c)", "icon": "🔧"},
+            "beginner": {"bg": "linear-gradient(135deg, #4facfe, #00f2fe)", "icon": "🌟"},
+        }
+        
+        color_info = profile_colors.get(profile, profile_colors["beginner"])
+        
+        st.markdown(
+            f"""
+            <div style='
+                background: {color_info["bg"]};
+                color: white;
+                border-radius: 12px;
+                padding: 2rem;
+                text-align: center;
+                margin-bottom: 2rem;
+            '>
+                <p style='font-size: 3rem; margin: 0;'>{color_info["icon"]}</p>
+                <h2 style='margin: 1rem 0 0.5rem 0;'>{result["titulo"]}</h2>
+                <p style='margin: 0; opacity: 0.95; font-size: 1.1rem;'>{result["descricao"]}</p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+        
+        # Pontuações
+        st.markdown("### 📊 Seus Resultados")
+        col1, col2, col3 = st.columns(3)
+        
+        scores = st.session_state.quiz_scores
+        
+        with col1:
+            st.markdown(
+                f"""
+                <div style='
+                    background: #f0f4ff;
+                    border-radius: 8px;
+                    padding: 1.5rem;
+                    text-align: center;
+                    border: 2px solid #667eea;
+                '>
+                    <p style='color: #667eea; margin: 0; font-size: 0.9rem;'>💻 Programação</p>
+                    <p style='color: #1e293b; margin: 0.5rem 0 0 0; font-size: 1.8rem; font-weight: 700;'>{scores["programming"]}</p>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+        
+        with col2:
+            st.markdown(
+                f"""
+                <div style='
+                    background: #fdf2f8;
+                    border-radius: 8px;
+                    padding: 1.5rem;
+                    text-align: center;
+                    border: 2px solid #ec4899;
+                '>
+                    <p style='color: #ec4899; margin: 0; font-size: 0.9rem;'>🔧 Tecnologia</p>
+                    <p style='color: #1e293b; margin: 0.5rem 0 0 0; font-size: 1.8rem; font-weight: 700;'>{scores["tech"]}</p>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+        
+        with col3:
+            st.markdown(
+                f"""
+                <div style='
+                    background: #ecfdf5;
+                    border-radius: 8px;
+                    padding: 1.5rem;
+                    text-align: center;
+                    border: 2px solid #10b981;
+                '>
+                    <p style='color: #10b981; margin: 0; font-size: 0.9rem;'>🌟 Iniciante</p>
+                    <p style='color: #1e293b; margin: 0.5rem 0 0 0; font-size: 1.8rem; font-weight: 700;'>{scores["beginner"]}</p>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+        
+        st.markdown("---")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("🗺️ Ver Roadmap", use_container_width=True):
+                st.session_state.current_page = "roadmap"
+                st.rerun()
+        
+        with col2:
+            if st.button("🔄 Refazer Quiz", use_container_width=True):
+                reset_quiz_state()
+                st.rerun()
 
         st.caption("Seu resultado é uma primeira indicação de perfil. Pode ser ajustado conforme você avança nos estudos.")
 
