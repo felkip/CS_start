@@ -1,0 +1,176 @@
+/* CSS Customizado para CS Start */
+
+/* Paleta de cores */
+:root {
+    --primary-color: #6366f1;      /* Indigo */
+    --secondary-color: #ec4899;    /* Pink */
+    --success-color: #10b981;      /* Green */
+    --warning-color: #f59e0b;      /* Amber */
+    --danger-color: #ef4444;       /* Red */
+    --dark-bg: #0f172a;            /* Slate 900 */
+    --light-bg: #f8fafc;           /* Slate 50 */
+    --border-color: #e2e8f0;       /* Slate 200 */
+}
+
+/* Estilos globais */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+.main {
+    background-color: transparent;
+}
+
+/* Títulos principais */
+h1 {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 2.5rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* Cards e containers */
+.stContainer {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Botões */
+.stButton > button {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white !important;
+    border: none !important;
+    border-radius: 8px;
+    padding: 10px 24px !important;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.stButton > button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+}
+
+/* Abas */
+.stTabs [data-baseweb="tab-list"] button {
+    font-weight: 600;
+    color: #64748b !important;
+}
+
+.stTabs [data-baseweb="tab-list"] button[aria-selected="true"] {
+    color: #667eea !important;
+    border-bottom-color: #667eea !important;
+}
+
+/* Inputs */
+.stTextInput > div > div > input,
+.stNumberInput > div > div > input,
+.stSelectbox > div > div > select {
+    border-radius: 8px !important;
+    border: 2px solid #e2e8f0 !important;
+    padding: 10px 12px !important;
+}
+
+.stTextInput > div > div > input:focus,
+.stNumberInput > div > div > input:focus,
+.stSelectbox > div > div > select:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+}
+
+/* Mensagens */
+.stSuccess {
+    background-color: #ecfdf5 !important;
+    border-left: 4px solid #10b981 !important;
+    border-radius: 8px !important;
+}
+
+.stError {
+    background-color: #fef2f2 !important;
+    border-left: 4px solid #ef4444 !important;
+    border-radius: 8px !important;
+}
+
+.stWarning {
+    background-color: #fffbeb !important;
+    border-left: 4px solid #f59e0b !important;
+    border-radius: 8px !important;
+}
+
+.stInfo {
+    background-color: #eff6ff !important;
+    border-left: 4px solid #3b82f6 !important;
+    border-radius: 8px !important;
+}
+
+/* Radio buttons */
+.stRadio > label > div > div {
+    border-radius: 8px;
+    border: 2px solid #e2e8f0 !important;
+    padding: 12px !important;
+    transition: all 0.2s ease;
+}
+
+.stRadio > label > div > div:hover {
+    border-color: #667eea !important;
+    background-color: #f0f4ff !important;
+}
+
+.stRadio > label > div > div[data-testid="stMarkdownContainer"] > p {
+    margin: 0;
+}
+
+/* Colunas */
+.stColumn {
+    padding: 1rem;
+}
+
+/* Texto de descrição */
+.subtitle {
+    color: #64748b;
+    font-size: 1.1rem;
+    margin-top: -0.5rem !important;
+    margin-bottom: 2rem !important;
+}
+
+/* Badge/Status */
+.badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    background: #f0f4ff;
+    color: #667eea;
+}
+
+.badge-success {
+    background: #ecfdf5;
+    color: #10b981;
+}
+
+/* Separadores */
+.divider {
+    height: 1px;
+    background: #e2e8f0;
+    margin: 2rem 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem !important;
+    }
+    
+    .stContainer {
+        padding: 1.5rem;
+    }
+}
