@@ -1,176 +1,449 @@
 /* CSS Customizado para CS Start */
 
-/* Paleta de cores */
 :root {
-    --primary-color: #6366f1;      /* Indigo */
-    --secondary-color: #ec4899;    /* Pink */
-    --success-color: #10b981;      /* Green */
-    --warning-color: #f59e0b;      /* Amber */
-    --danger-color: #ef4444;       /* Red */
-    --dark-bg: #0f172a;            /* Slate 900 */
-    --light-bg: #f8fafc;           /* Slate 50 */
-    --border-color: #e2e8f0;       /* Slate 200 */
+    --brand-primary: #0e7490;
+    --brand-primary-hover: #155e75;
+    --brand-secondary: #6d28d9;
+    --brand-accent: #2563eb;
+    --brand-primary-text: var(--brand-primary);
+    --brand-secondary-text: var(--brand-secondary);
+    --brand-accent-text: var(--brand-accent);
+    --color-success: #047857;
+    --color-warning: #b45309;
+    --color-danger: #b91c1c;
+    --color-info: #1d4ed8;
+    --color-success-soft: rgba(4, 120, 87, 0.08);
+    --color-warning-soft: rgba(180, 83, 9, 0.08);
+    --color-danger-soft: rgba(185, 28, 28, 0.08);
+    --color-info-soft: rgba(29, 78, 216, 0.08);
+    --color-success-text: #065f46;
+    --color-warning-text: #92400e;
+    --color-danger-text: #991b1b;
+    --color-info-text: #1e40af;
+    --brand-heading-start: var(--brand-primary);
+    --focus-ring: var(--brand-primary);
+    --color-progress-start: var(--brand-primary);
+
+    --bg-page: #f8fafc;
+    --bg-page-tint: #ecfeff;
+    --bg-panel: rgba(255, 255, 255, 0.9);
+    --bg-surface: #ffffff;
+    --bg-subtle: #f1f5f9;
+    --bg-elevated: var(--bg-subtle);
+    --bg-sidebar: rgba(248, 250, 252, 0.96);
+    --bg-soft: #ecfeff;
+
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --text-on-brand: #ffffff;
+    --border: #e2e8f0;
+    --shadow: rgba(15, 23, 42, 0.08);
+    --shadow-strong: rgba(14, 116, 144, 0.18);
+
+    --primary: var(--brand-primary);
+    --secondary: var(--brand-accent);
+    --success: var(--color-success);
+    --warning: var(--color-warning);
+    --danger: var(--color-danger);
+    --bg-panel-strong: var(--bg-surface);
+    --text: var(--text-primary);
+    --text-soft: var(--text-secondary);
 }
 
-/* Estilos globais */
-body {
+html, body {
+    margin: 0;
+    min-height: 100%;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
+    background: linear-gradient(135deg, var(--bg-page-tint) 0%, var(--bg-page) 100%);
+    color: var(--text-primary);
 }
 
-.main {
-    background-color: transparent;
+body {
+    background: linear-gradient(135deg, var(--bg-page-tint) 0%, var(--bg-page) 100%);
 }
 
-/* Títulos principais */
+.main .block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.stApp {
+    background: linear-gradient(135deg, var(--bg-page-tint) 0%, var(--bg-page) 100%);
+    color: var(--text-primary);
+}
+
+[data-testid="stSidebar"] {
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border);
+}
+
+[data-testid="stExpandSidebarButton"] {
+    background: var(--bg-surface) !important;
+    color: var(--text-secondary) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 8px !important;
+}
+
+[data-testid="stExpandSidebarButton"] [data-testid="stIconMaterial"] {
+    color: var(--text-secondary) !important;
+    opacity: 1 !important;
+}
+
+[data-testid="stExpandSidebarButton"]:hover {
+    background: var(--bg-subtle) !important;
+    border-color: var(--brand-primary-text) !important;
+}
+
+[data-testid="stExpandSidebarButton"]:focus-visible {
+    outline: 3px solid var(--focus-ring) !important;
+    outline-offset: 2px !important;
+}
+
 h1 {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    font-size: 2.5rem !important;
+    background: none;
+    color: var(--brand-heading-start) !important;
+    -webkit-text-fill-color: var(--brand-heading-start) !important;
+    font-size: 2.7rem !important;
     font-weight: 700 !important;
     margin-bottom: 0.5rem !important;
 }
 
-/* Cards e containers */
-.stContainer {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 16px;
-    padding: 2rem;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+.cs-brand-heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
 }
 
-/* Botões */
-.stButton > button {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white !important;
-    border: none !important;
-    border-radius: 8px;
-    padding: 10px 24px !important;
+.cs-brand-icon,
+.cs-feature-icon,
+.cs-profile-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.cs-brand-icon {
+    color: var(--brand-primary);
+    -webkit-text-fill-color: initial;
+}
+
+.cs-feature-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+}
+
+.cs-profile-icon {
+    width: 2rem;
+    height: 2rem;
+    margin-right: 0.9rem;
+    color: var(--text-on-brand);
+}
+
+.cs-field-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.35rem;
+    color: var(--text-secondary);
     font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
-.stButton > button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+.cs-field-label svg {
+    flex-shrink: 0;
+    color: var(--brand-primary);
 }
 
-/* Abas */
+.cs-button-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--brand-primary-text);
+}
+
+.cs-icon-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.cs-heading-icon,
+.cs-empty-icon,
+.cs-stat-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--brand-primary-text);
+}
+
+.cs-roadmap-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cs-empty-icon,
+.cs-stat-icon {
+    margin: 0 0 0.75rem;
+}
+
+[class*="st-key-sidebar-nav-"] [data-testid="stHorizontalBlock"] {
+    align-items: center;
+}
+
+[class*="st-key-sidebar-nav-"] [data-testid="stButton"] > button {
+    min-height: 2.75rem;
+    text-align: left;
+    box-shadow: none;
+}
+
+[class*="st-key-sidebar-nav-"] [data-testid="stButton"] > button[kind="secondary"] {
+    background: transparent !important;
+    color: var(--text-secondary) !important;
+    border: 1px solid transparent !important;
+}
+
+[class*="st-key-sidebar-nav-"] [data-testid="stButton"] > button[kind="primary"] {
+    background: var(--brand-primary) !important;
+    color: var(--text-on-brand) !important;
+    border: 1px solid var(--brand-primary) !important;
+}
+
+[class*="st-key-sidebar-nav-"] .cs-button-icon {
+    min-height: 2.75rem;
+}
+
+[class*="st-key-sidebar-nav-"]:has(button[kind="primary"]) .cs-button-icon {
+    color: var(--text-on-brand) !important;
+}
+
+.cs-theme-toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.cs-theme-toggle-label svg {
+    color: var(--brand-primary);
+}
+
+.cs-dashboard-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.4rem;
+}
+
+.cs-icon-heading .cs-heading-icon {
+    color: var(--brand-primary-text);
+}
+
+.cs-dashboard-icon {
+    color: var(--brand-primary);
+}
+
+h2, h3, h4 {
+    color: var(--text-primary) !important;
+}
+
+p, li, label {
+    color: var(--text-secondary);
+}
+
+.stContainer,
+[data-testid="stVerticalBlock"] > div,
+[data-testid="stHorizontalBlock"] > div {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+}
+
+.stTabs [data-baseweb="tab-list"] {
+    gap: 0.5rem;
+}
+
 .stTabs [data-baseweb="tab-list"] button {
     font-weight: 600;
-    color: #64748b !important;
+    border-radius: 12px 12px 0 0;
+    color: var(--text-muted) !important;
 }
 
 .stTabs [data-baseweb="tab-list"] button[aria-selected="true"] {
-    color: #667eea !important;
-    border-bottom-color: #667eea !important;
+    color: var(--brand-primary) !important;
+    border-bottom-color: var(--focus-ring) !important;
+    background: color-mix(in srgb, var(--brand-primary) 6%, transparent);
 }
 
-/* Inputs */
+.stButton > button {
+    background: var(--brand-primary);
+    color: var(--text-on-brand) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 0.7rem 1.2rem !important;
+    font-weight: 600 !important;
+    box-shadow: 0 8px 20px color-mix(in srgb, var(--brand-primary) 24%, transparent);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stButton > button:hover {
+    background: var(--brand-primary-hover) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 12px 22px color-mix(in srgb, var(--brand-primary) 32%, transparent);
+}
+
+.stButton > button p,
+.stButton > button span,
+[data-testid="stLinkButton"] a,
+[data-testid="stLinkButton"] a *,
+.stDownloadButton > button,
+.stDownloadButton > button * {
+    color: var(--text-on-brand) !important;
+}
+
+[data-testid="stLinkButton"] a,
+.stDownloadButton > button {
+    background: var(--brand-primary) !important;
+    border: 0 !important;
+    border-radius: 10px !important;
+    box-shadow: 0 8px 20px color-mix(in srgb, var(--brand-primary) 24%, transparent) !important;
+}
+
+[data-testid="stLinkButton"] a:hover,
+.stDownloadButton > button:hover {
+    background: var(--brand-primary-hover) !important;
+}
+
+[data-testid="stLinkButton"] a:focus-visible,
+.stDownloadButton > button:focus-visible {
+    outline: 3px solid var(--focus-ring) !important;
+    outline-offset: 2px !important;
+}
+
+[class*="st-key-sidebar-nav-"] [data-testid="stButton"] > button[kind="secondary"] *,
+[class*="st-key-sidebar-nav-"] [data-testid="stButton"] > button[kind="secondary"] {
+    color: var(--text-secondary) !important;
+}
+
+[class*="st-key-sidebar-nav-"] [data-testid="stButton"] > button[kind="primary"] *,
+[class*="st-key-sidebar-nav-"] [data-testid="stButton"] > button[kind="primary"] {
+    color: var(--text-on-brand) !important;
+}
+
 .stTextInput > div > div > input,
 .stNumberInput > div > div > input,
-.stSelectbox > div > div > select {
-    border-radius: 8px !important;
-    border: 2px solid #e2e8f0 !important;
+.stSelectbox > div > div > select,
+textarea {
+    background: var(--bg-subtle) !important;
+    color: var(--text-primary) !important;
+    border-radius: 10px !important;
+    border: 1px solid var(--border) !important;
     padding: 10px 12px !important;
+}
+
+.stTextInput input::placeholder,
+.stNumberInput input::placeholder,
+textarea::placeholder {
+    color: var(--text-muted) !important;
+    opacity: 1 !important;
 }
 
 .stTextInput > div > div > input:focus,
 .stNumberInput > div > div > input:focus,
-.stSelectbox > div > div > select:focus {
-    border-color: #667eea !important;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+.stSelectbox > div > div > select:focus,
+textarea:focus {
+    border-color: var(--focus-ring) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus-ring) 12%, transparent) !important;
 }
 
-/* Mensagens */
+.stSuccess,
+.stError,
+.stWarning,
+.stInfo {
+    border-radius: 12px !important;
+    border-left: 4px solid currentColor !important;
+}
+
 .stSuccess {
-    background-color: #ecfdf5 !important;
-    border-left: 4px solid #10b981 !important;
-    border-radius: 8px !important;
+    background: var(--color-success-soft) !important;
+    color: var(--color-success-text) !important;
 }
 
 .stError {
-    background-color: #fef2f2 !important;
-    border-left: 4px solid #ef4444 !important;
-    border-radius: 8px !important;
+    background: var(--color-danger-soft) !important;
+    color: var(--color-danger-text) !important;
 }
 
 .stWarning {
-    background-color: #fffbeb !important;
-    border-left: 4px solid #f59e0b !important;
-    border-radius: 8px !important;
+    background: var(--color-warning-soft) !important;
+    color: var(--color-warning-text) !important;
 }
 
 .stInfo {
-    background-color: #eff6ff !important;
-    border-left: 4px solid #3b82f6 !important;
-    border-radius: 8px !important;
+    background: var(--color-info-soft) !important;
+    color: var(--color-info-text) !important;
 }
 
-/* Radio buttons */
 .stRadio > label > div > div {
-    border-radius: 8px;
-    border: 2px solid #e2e8f0 !important;
+    border-radius: 12px;
+    border: 1px solid var(--border) !important;
+    background: var(--bg-subtle);
     padding: 12px !important;
-    transition: all 0.2s ease;
 }
 
 .stRadio > label > div > div:hover {
-    border-color: #667eea !important;
-    background-color: #f0f4ff !important;
+    border-color: var(--focus-ring) !important;
+    background: color-mix(in srgb, var(--brand-primary) 4%, transparent);
 }
 
-.stRadio > label > div > div[data-testid="stMarkdownContainer"] > p {
-    margin: 0;
-}
-
-/* Colunas */
-.stColumn {
-    padding: 1rem;
-}
-
-/* Texto de descrição */
 .subtitle {
-    color: #64748b;
+    color: var(--text-muted);
     font-size: 1.1rem;
     margin-top: -0.5rem !important;
     margin-bottom: 2rem !important;
 }
 
-/* Badge/Status */
 .badge {
     display: inline-block;
     padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.875rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
     font-weight: 600;
-    background: #f0f4ff;
-    color: #667eea;
+    background: color-mix(in srgb, var(--brand-primary) 8%, transparent);
+    color: var(--brand-primary);
 }
 
 .badge-success {
-    background: #ecfdf5;
-    color: #10b981;
+    background: color-mix(in srgb, var(--color-success) 8%, transparent);
+    color: var(--color-success);
 }
 
-/* Separadores */
 .divider {
     height: 1px;
-    background: #e2e8f0;
+    background: var(--border);
     margin: 2rem 0;
 }
 
-/* Responsive */
+.cs-section-spacer {
+    height: 2rem;
+}
+
+.css-1d391kg {
+    background: transparent !important;
+}
+
 @media (max-width: 768px) {
     h1 {
-        font-size: 2rem !important;
+        font-size: 2.1rem !important;
     }
-    
-    .stContainer {
-        padding: 1.5rem;
+
+    .main .block-container {
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
 }
