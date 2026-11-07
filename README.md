@@ -16,258 +16,128 @@ O **CS Start** surgiu como um projeto de estudo e portfólio com foco em desenvo
 
 ---
 
-# 📸 Demonstração
+## Estrutura do Projeto
 
-Adicione aqui capturas de tela ou GIFs da aplicação.
+```
+CS Start/
+├── app/                 # Módulos da aplicação
+│   ├── auth.py         # Sistema de autenticação
+│   ├── quiz.py         # Lógica do quiz de perfil
+│   ├── learning.py     # Categorias de aprendizagem por perfil
+│   ├── roadmap.py      # Roadmap sugerido por perfil
+│   └── ui.py           # Componentes visuais reutilizáveis
+├── config/             # Configurações
+│   └── db_config.py    # Configuração do banco de dados
+├── database/           # Scripts SQL
+│   └── schema.sql      # Schema do banco
+├── static/             # Arquivos estáticos (CSS, imagens e ícones)
+│   ├── style.css       # Estilos personalizados
+│   └── icons/          # Ícones Lucide em SVG e licenças
+├── .streamlit/         # Configurações do Streamlit
+│   └── config.toml
+├── main.py             # Aplicação principal (Streamlit)
+├── requirements.txt    # Dependências Python
+├── tests/              # Testes do projeto
+├── .env.example        # Exemplo de variáveis de ambiente
+├── CHANGELOG.md        # Histórico de mudanças do projeto
+├── design_system.md    # Tokens, paleta e diretrizes visuais
+├── errors.md           # Registro de erros e correções
+├── cleanup_suggestions.md # Sugestões de limpeza do repositório
+└── README.md           # Documentação principal do projeto
+```
 
-| Tela | Descrição |
-|------|-----------|
-| 🏠 Home | Página inicial |
-| 🔐 Login | Autenticação de usuários |
-| 📝 Cadastro | Criação de conta |
-| 📋 Quiz | Identificação do perfil |
-| 🗺️ Roadmap | Plano inicial de estudos |
+## Funcionalidades
 
----
+### ✅ Implementadas
+- **Login e Cadastro** - Sistema de autenticação com senhas criptografadas
+- **Quiz de Perfil** - Perguntas guiadas para identificar afinidade com computação
+- **Roadmap de Estudos** - Sugestão de estudo com base no perfil
+- **Materiais e módulos de aprendizagem** - 13 módulos iniciais com recursos externos, atividades práticas e filtros por categoria, nível e etapa do roadmap, personalizados pelo perfil do quiz
+- **UI Aprimorada** - Layout renovado com sidebar, cards e componentes visuais
+- **Tema claro/escuro** - Alternância do tema e ajuste de contraste para melhorar a experiência visual
+- **Ícones Lucide** - SVGs locais com licenças incluídas, adotados gradualmente na interface
+- **Design System** - Paleta, tokens e diretrizes visuais documentados em `design_system.md`
+- **Documentação de mudanças** - changelog e arquivos de suporte para histórico e limpeza
 
-# ✨ Funcionalidades
+### 🔄 Em Desenvolvimento
+- **Recomendações personalizadas** - sugestões mais completas no roadmap
+- **Aprimoramentos visuais adicionais** - refinamento de layout e UX
 
-- ✅ Cadastro de usuários
-- ✅ Login seguro
-- ✅ Criptografia de senhas com bcrypt
-- ✅ Integração com PostgreSQL
-- ✅ Banco hospedado no Supabase
-- ✅ Quiz para identificar o perfil do estudante
-- ✅ Roadmap inicial de estudos
-- ✅ Interface desenvolvida com Streamlit
-- ✅ Arquitetura modular
-- ✅ Testes automatizados
+## Instalação
 
----
-
-# 🛠️ Tecnologias
-
-- Python
-- Streamlit
-- PostgreSQL
-- Supabase
-- psycopg2-binary
-- bcrypt
-- python-dotenv
-- pytest
-- CSS
-- Git
-- GitHub
-
----
-
-# 📦 Dependências
-
-As principais dependências utilizadas são:
-
-| Biblioteca | Finalidade |
-|------------|------------|
-| Streamlit | Interface da aplicação |
-| psycopg2-binary | Integração com PostgreSQL |
-| bcrypt | Criptografia de senhas |
-| python-dotenv | Variáveis de ambiente |
-| pytest | Testes automatizados |
-
-Todas as dependências podem ser instaladas com:
-
+### 1. Clonar o projeto
 ```bash
-pip install -r requirements.txt
+cd "C:\Users\lfcar\OneDrive\Desktop\CC"
 ```
-
----
-
-# 📂 Estrutura do Projeto
-
-```text
-CS Start
-│
-├── .devcontainer/
-│
-├── app/
-│   ├── auth.py
-│   ├── quiz.py
-│   ├── roadmap.py
-│   └── ui.py
-│
-├── config/
-│   ├── __init__.py
-│   └── db_config.py
-│
-├── database/
-│   └── schema.sql
-│
-├── static/
-│   └── style.css
-│
-├── tests/
-│
-├── .env.example
-├── cleanup_suggestions.md
-├── config.toml
-├── errors.md
-├── updates_from_mvp.md
-├── LICENSE
-├── main.py
-├── plano_quiz.md
-├── plano_roadmap.md
-├── README.md
-└── requirements.txt
-```
-
----
-
-# 🚀 Instalação
-
-### 1. Clone o repositório
-
-```bash
-git clone https://github.com/felkip/CC_start.git
-cd CC_start
-```
-
----
 
 ### 2. Criar ambiente virtual
-
-Recomenda-se utilizar **Python 3.13 ou superior**.
-
-**Windows (com Python Launcher):**
-
+Use Python 3.13 ou 3.14 para evitar problemas de compatibilidade.
 ```bash
-py -3.13 -m venv venv
-.\venv\Scripts\activate
+py -3.13 -m venv .venv
+.\.venv\Scripts\activate
 ```
-
-Caso não tenha o Python Launcher instalado:
-
+Se não tiver o launcher do Windows, use:
 ```bash
-python -m venv venv
-.\venv\Scripts\activate
+python -m venv .venv
+.\.venv\Scripts\activate
 ```
-
-**Linux/macOS**
-
-```bash
-python3 -m venv venv
-source venv/bin/activate
-```
-
----
 
 ### 3. Atualizar instaladores e instalar dependências
-
 ```bash
 python -m pip install --upgrade pip setuptools wheel
 python -m pip install -r requirements.txt
 ```
 
----
+> `requirements.txt` inclui agora `pytest` para facilitar testes locais.
 
-### 4. Configurar variáveis de ambiente
+### 4. Configurar banco de dados
 
-Copie:
+#### Opção A: PostgreSQL Local
+1. Instale PostgreSQL (https://www.postgresql.org/download/)
+2. Abra o pgAdmin ou psql
+3. Execute o arquivo `database/schema.sql`
+4. Copie `.env.example` para `.env` e configure as credenciais
 
-```text
-.env.example
-```
-
-para
-
-```text
-.env
-```
-
-Configure:
-
-```env
-DB_HOST=
-DB_PORT=
-DB_NAME=
-DB_USER=
-DB_PASSWORD=
-```
-
-O projeto suporta:
-
-- PostgreSQL local
-- PostgreSQL hospedado no Supabase
-
----
+#### Opção B: Supabase (PostgreSQL em Nuvem)
+1. Crie uma conta em https://supabase.com
+2. Execute o arquivo `database/schema.sql` no editor SQL
+3. Copie a connection string para `.env`
 
 ### 5. Executar a aplicação
-
 ```bash
 streamlit run main.py
 ```
 
----
+A aplicação abrirá em `http://localhost:8501`
 
-# 🧪 Testes
-
-Execute os testes com:
-
+### 6. Executar testes
 ```bash
-pytest
+python -m pytest -q
 ```
 
----
+## Observações importantes
 
-# 📖 Documentação
+- Não commite o arquivo `.env`.
+- Não commite pastas de ambiente virtual como `.venv/`.
+- Arquivos de cache como `__pycache__/` e `.pytest_cache/` devem ser ignorados.
 
-O projeto inclui documentos auxiliares durante o desenvolvimento:
+## Regras do Projeto
 
-| Arquivo | Descrição |
-|----------|-----------|
-| updates_from_mvp.md | Histórico das melhorias |
-| cleanup_suggestions.md | Sugestões de refatoração |
-| errors.md | Registro dos problemas encontrados |
-| plano_quiz.md | Planejamento do Quiz |
-| plano_roadmap.md | Planejamento do Roadmap |
+- ✅ Código simples
+- ✅ Priorizar funcionamento
+- ✅ Uma funcionalidade por vez
+- ✅ Manter arquivos organizados
 
----
+## Próximas Tarefas
 
-# 🎯 Objetivos
+- [x] Implementar Quiz de Perfil
+- [x] Implementar Roadmap de estudos
+- [x] Adicionar interface visual melhorada
+- [x] Adicionar materiais de aprendizagem por perfil
+- [x] Revisar paleta e design system inicial
+- [ ] Implementar sistema de recomendações mais avançado
+- [ ] Melhorar a experiência visual em telas e estados pendentes
 
-Este projeto busca praticar:
-
-- Desenvolvimento de aplicações Python
-- Arquitetura de software
-- PostgreSQL
-- Integração com Supabase
-- Desenvolvimento Web com Streamlit
-- UI/UX
-- Organização de código
-- Git e GitHub
-- Construção de projetos para portfólio
-
----
-
-# 🚧 Status do Projeto
-
-### ✅ Implementado
-
-- Login
-- Cadastro
-- PostgreSQL
-- Supabase
-- Quiz
-- Roadmap
-- Testes básicos
-- Melhorias de UI/UX
-
-### 🔄 Em desenvolvimento
-
-- Dashboard do estudante
-- Histórico de progresso
-- Recomendações mais inteligentes
-- Novos conteúdos
-- Melhor cobertura de testes
-- Melhor responsividade
 
 ---
 
