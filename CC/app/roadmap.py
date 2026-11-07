@@ -1,6 +1,14 @@
 try:
     import streamlit as st
-    from app.ui import render_roadmap_item, render_empty_state
+    from app.learning import render_learning_categories
+    from app.ui import (
+        get_icon_svg,
+        render_icon_download_button,
+        render_empty_state,
+        render_icon_button,
+        render_icon_heading,
+        render_roadmap_item,
+    )
 except ModuleNotFoundError:  # pragma: no cover - fallback para testes simples
     class _StreamlitFallback:
         def info(self, *args, **kwargs):
@@ -21,6 +29,9 @@ except ModuleNotFoundError:  # pragma: no cover - fallback para testes simples
         pass
     
     def render_empty_state(*args, **kwargs):
+        pass
+
+    def render_learning_categories(*args, **kwargs):
         pass
 
 ROADMAPS = {
@@ -60,61 +71,74 @@ def render_roadmap(profile=None):
         render_empty_state(
             "Roadmap não disponível",
             "Complete o quiz para ver um plano de estudos personalizado.",
-            "🗺️"
+            "map"
         )
         return
 
+    dark_mode = st.session_state.get("theme") == "dark"
     topics = get_roadmap_for_profile(profile)
-    
+
     # Títulos e descrições dos perfis
     profile_info = {
         "programming": {
-            "titulo": "🧑‍💻 Caminho do Programador",
+            "titulo": "Caminho do Programador",
+            "icone": "code",
             "descricao": "Focado em desenvolvimento de soluções, algoritmos e pensamento lógico. Você aprenderá a criar programas e resolver problemas através de código.",
-            "cor": "linear-gradient(135deg, #667eea, #764ba2)",
+            "cor": "linear-gradient(135deg, var(--brand-primary), var(--brand-accent))",
         },
         "tech": {
-            "titulo": "🔧 Caminho da Tecnologia",
-            "descricao": "Exploração de ferramentas, sistemas e inovações tecnológicas. Você descubrirá como a tecnologia funciona e como usá-la de forma criativa.",
-            "cor": "linear-gradient(135deg, #f093fb, #f5576c)",
+            "titulo": "Caminho da Tecnologia",
+            "icone": "monitor",
+            "descricao": "Exploração de ferramentas, sistemas e inovações tecnológicas. Você descobrirá como a tecnologia funciona e como usá-la de forma criativa.",
+            "cor": "linear-gradient(135deg, var(--brand-accent), var(--brand-secondary))",
         },
         "beginner": {
-            "titulo": "🌟 Caminho do Iniciante",
+            "titulo": "Caminho do Iniciante",
+            "icone": "sparkles",
             "descricao": "Abordagem suave e estruturada para aprender o básico de computação. Você evoluirá no seu próprio ritmo com fundamentos sólidos.",
-            "cor": "linear-gradient(135deg, #4facfe, #00f2fe)",
+            "cor": "linear-gradient(135deg, var(--brand-primary), var(--brand-secondary))",
         },
     }
-    
+
     info = profile_info.get(profile, profile_info["beginner"])
-    
+    profile_icon = get_icon_svg(info["icone"], size=28)
+
     # Header do roadmap
     st.markdown(
         f"""
         <div style='
             background: {info["cor"]};
-            color: white;
+            color: var(--text-on-brand);
             border-radius: 12px;
             padding: 2rem;
             margin-bottom: 2rem;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 12px 28px rgba(15, 23, 42, 0.22);
         '>
-            <h2 style='margin-top: 0; margin-bottom: 0.5rem;'>{info["titulo"]}</h2>
+            <h2 class="cs-roadmap-heading" style='margin-top: 0; margin-bottom: 0.5rem;'>
+                {profile_icon}<span>{info["titulo"]}</span>
+            </h2>
             <p style='margin: 0; opacity: 0.95;'>{info["descricao"]}</p>
         </div>
         """,
         unsafe_allow_html=True
     )
-    
-    st.markdown("### 📚 Seu Plano de Estudos")
-    st.markdown(f"**Progresso:** 0 de {len(topics)} tópicos concluídos")
+
+    render_icon_heading("Seu Plano de Estudos", "book-open")
+    if dark_mode:
+        st.markdown(f"<p style='color: var(--text-secondary); margin-top: 0;'><strong>Progresso:</strong> 0 de {len(topics)} tópicos concluídos</p>", unsafe_allow_html=True)
+    else:
+        st.markdown(f"**Progresso:** 0 de {len(topics)} tópicos concluídos")
     
     # Itens do roadmap
     for index, topic in enumerate(topics, start=1):
         render_roadmap_item(topic, index)
     
     st.markdown("---")
+    render_learning_categories(profile)
     
     # Seção de dicas e recursos
-    with st.expander("💡 Dicas para ter sucesso", expanded=False):
+    render_icon_heading("Dicas para ter sucesso", "lightbulb", level=4)
+    with st.expander("Ver dicas e recursos", expanded=False):
         st.markdown(f"""
         #### Dicas para o perfil {profile.title()}:
         
@@ -134,21 +158,22 @@ def render_roadmap(profile=None):
     # Botões de ação
     col1, col2, col3 = st.columns(3)
     with col1:
-        if st.button("🔄 Refazer Quiz", use_container_width=True):
-            from app.quiz import reset_quiz_state
-            reset_quiz_state()
-            st.rerun()
-    
-    with col2:
-        st.download_button(
-            label="📥 Baixar Roadmap (PDF)",
+        render_icon_download_button(
+            "Baixar Roadmap",
+            "download",
             data=f"Roadmap para {profile.title()}\n\n" + "\n".join([f"{i}. {t}" for i, t in enumerate(topics, 1)]),
             file_name="meu_roadmap.txt",
             mime="text/plain",
-            use_container_width=True
         )
+
+    with col2:
+        if render_icon_button("Fazer outro quiz", "target", key="roadmap_restart_quiz"):
+            from app.quiz import iniciar_quiz
+            iniciar_quiz()
+            st.session_state.current_page = "quiz"
+            st.rerun()
     
     with col3:
-        if st.button("🏠 Voltar ao Início", use_container_width=True):
+        if render_icon_button("Voltar ao Início", "house", key="roadmap_home"):
             st.session_state.current_page = "home"
             st.rerun()
