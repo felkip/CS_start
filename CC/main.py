@@ -52,7 +52,14 @@ configure_theme()
 header_principal()
 
 if not st.session_state.logged_in:
-    # Seção de autenticação
+   # Seção de autenticação
+    st.markdown(
+        "<p style='text-align: center; color: #64748b; max-width: 720px; margin: 0 auto 1rem auto;'>"
+        "Para quem está começando ou considerando Ciência da Computação: em cerca de 2 minutos "
+        "você responde um quiz rápido, descobre seu perfil e recebe um roadmap inicial de estudos."
+        "</p>",
+        unsafe_allow_html=True,
+    )
     col1, col2, col3 = st.columns([1, 2, 1])
     
     with col2:
