@@ -39,6 +39,8 @@ if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
     st.session_state.user_id = None
     st.session_state.username = None
+if "guest_mode" not in st.session_state:
+    st.session_state.guest_mode = False
 if "current_page" not in st.session_state:
     st.session_state.current_page = "home"
 if "theme" not in st.session_state:
@@ -52,7 +54,7 @@ configure_theme()
 header_principal()
 
 if not st.session_state.logged_in:
-   # Seção de autenticação
+    # Seção de autenticação
     st.markdown(
         "<p style='text-align: center; color: #64748b; max-width: 720px; margin: 0 auto 1rem auto;'>"
         "Para quem está começando ou considerando Ciência da Computação: em cerca de 2 minutos "
@@ -97,6 +99,7 @@ if not st.session_state.logged_in:
                         success, user_id, message = login_user(username, password)
                         if success:
                             st.session_state.logged_in = True
+                            st.session_state.guest_mode = False
                             st.session_state.user_id = user_id
                             st.session_state.username = username
                             st.success(message)
@@ -154,6 +157,23 @@ if not st.session_state.logged_in:
                         st.info("Você pode fazer login agora!")
                     else:
                         st.error(message)
+
+        st.markdown("<div style='margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border, #e2e8f0);'>", unsafe_allow_html=True)
+        st.markdown("<p style='color: #64748b; margin: 0 0 0.75rem 0; text-align: center;'>Quer só experimentar a demo sem criar conta?</p>", unsafe_allow_html=True)
+        if render_icon_button(
+            "Entrar como visitante",
+            "user-round",
+            key="guest_mode_submit",
+        ):
+            st.session_state.logged_in = True
+            st.session_state.guest_mode = True
+            st.session_state.user_id = None
+            st.session_state.username = "Visitante"
+            st.session_state.current_page = "home"
+            reset_quiz_state()
+            st.rerun()
+        st.caption("No modo visitante, seu progresso não é salvo após fechar a página.")
+        st.markdown("</div>", unsafe_allow_html=True)
         
         st.markdown("</div>", unsafe_allow_html=True)
     
@@ -190,6 +210,8 @@ else:
         render_icon_heading("Menu", "settings-2")
         
         render_profile_badge(st.session_state.username or "Usuário")
+        if st.session_state.get("guest_mode"):
+            st.caption("Modo visitante: seu progresso fica salvo apenas nesta sessão.")
 
         nav_items = (
             ("Início", "house", "home"),
@@ -211,17 +233,23 @@ else:
         
         if render_icon_button("Sair", "log-out", key="sidebar-logout"):
             st.session_state.logged_in = False
+            st.session_state.guest_mode = False
             st.session_state.user_id = None
             st.session_state.username = None
+            st.session_state.current_page = "home"
             reset_quiz_state()
             st.rerun()
     
     # Página principal após login
     if st.session_state.current_page == "home":
-        render_icon_heading(
-            f"Bem-vindo de volta, {st.session_state.username}!",
-            "house",
-        )
+        if st.session_state.get("guest_mode"):
+            render_icon_heading("Bem-vindo, visitante!", "house")
+            st.info("Você está no modo visitante. Pode fazer o quiz e ver o roadmap, mas seu progresso não será salvo após fechar a página.")
+        else:
+            render_icon_heading(
+                f"Bem-vindo de volta, {st.session_state.username}!",
+                "house",
+            )
 
         quiz_completed = st.session_state.get("quiz_completed")
         status_text = "Quiz completo" if quiz_completed else "Não iniciado"
@@ -387,11 +415,15 @@ else:
         
         with st.container(border=True):
             render_icon_heading("Perfil do Usuário", "user-round", level=4)
-            col1, col2 = st.columns(2)
-            with col1:
-                st.markdown(f"**Usuário:** {st.session_state.username}")
-            with col2:
-                st.markdown(f"**ID:** {st.session_state.user_id}")
+            if st.session_state.get("guest_mode"):
+                st.markdown("**Modo:** Visitante")
+                st.info("Você está usando a demo sem conta. Faça login ou crie uma conta para salvar seu progresso quando o banco de dados estiver configurado.")
+            else:
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.markdown(f"**Usuário:** {st.session_state.username}")
+                with col2:
+                    st.markdown(f"**ID:** {st.session_state.user_id}")
         
         with st.container(border=True):
             render_icon_heading("Quiz", "target", level=4)
